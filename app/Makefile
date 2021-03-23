@@ -67,12 +67,18 @@ include $(CURDIR)/Makefile.version
 $(info COIN  = [$(COIN)])
 ifeq ($(COIN),DOT)
 # Main app configuration
-DEFINES += APP_STANDARD
+DEFINES += APP_STANDARD SUBSTRATE_PARSER_FULL
 APPNAME = "Polkadot"
 APPPATH = "44'/354'"  --path "44'/434'"
 
+else ifeq ($(COIN),DOT_lite)
+# Main app configuration
+DEFINES += APP_STANDARD
+APPNAME = "Polkadot Lite"
+APPPATH = "44'/354'"  --path "44'/434'"
+
 else ifeq ($(COIN),Ledgeracio)
-DEFINES += APP_RESTRICTED
+DEFINES += APP_RESTRICTED SUBSTRATE_PARSER_FULL
 APPNAME = "Polkadot_sec"
 APPPATH = "44'/354'"
 
@@ -233,4 +239,8 @@ dep/%.d: %.c Makefile
 
 .PHONY: listvariants
 listvariants:
+ifeq ($(TARGET_NAME),TARGET_NANOS)
+	@echo VARIANTS COIN DOT DOT_lite Ledgeracio
+else ifeq ($(TARGET_NAME),TARGET_NANOX)
 	@echo VARIANTS COIN DOT Ledgeracio
+endif
